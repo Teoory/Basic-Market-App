@@ -11,6 +11,8 @@ const User = require ('./models/User');
 const Product = require('./models/Product');
 const Order = require('./models/Order');
 const { sendDiscordNotification } = require('./utils/discord');
+const Sale = require('./models/Sale');
+const Note = require('./models/Note');
 
 const app = express ();
 require ('dotenv').config ();
@@ -66,20 +68,22 @@ app.post('/login', async (req, res) => {
                 {
                     id: userDoc._id,
                     username: userDoc.username,
-                    role: userDoc.role
+                    role: userDoc.role,
+                    isAdmin: userDoc.role === 'admin'
                 },
                 secret
             );
 
             res.cookie('token', token, {
                 sameSite: "none",
-                maxAge: 24 * 60 * 60 * 1000, // 24 saat
+                maxAge: 24 * 60 * 60 * 1000,
                 httpOnly: false,
                 secure: true
             }).json({
                 id: userDoc._id,
                 username: userDoc.username,
-                role: userDoc.role
+                role: userDoc.role,
+                isAdmin: userDoc.role === 'admin'
             });
         } else {
             res.status(400).json({message: 'Şifre yanlış'});
@@ -126,22 +130,38 @@ app.get('/profile', async (req, res) => {
     }
 });
 
-// Admin middleware'ini güncelle
+// Auth middleware
+const authenticateToken = async (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).json({ error: 'Yetkilendirme gerekli' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, secret);
+        req.user = decoded;
+        next();
+    } catch (err) {
+        return res.status(401).json({ error: 'Geçersiz token' });
+    }
+};
+
+// Admin middleware
 const isAdmin = async (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ error: 'Authentication required' });
+        return res.status(401).json({ error: 'Yetkilendirme gerekli' });
     }
 
     try {
         const decoded = jwt.verify(token, secret);
         if (decoded.role !== 'admin') {
-            return res.status(403).json({ error: 'Admin rights required' });
+            return res.status(403).json({ error: 'Bu işlem için yetkiniz yok' });
         }
         req.user = decoded;
         next();
     } catch (err) {
-        res.status(401).json({ error: 'Invalid token' });
+        return res.status(401).json({ error: 'Geçersiz token' });
     }
 };
 
@@ -337,6 +357,114 @@ app.patch('/orders/:id/mark-as-read', isAdmin, async (req, res) => {
         res.json(order);
     } catch (e) {
         res.status(400).json({ error: e.message });
+    }
+});
+
+// Satış kaydetme endpoint'i
+app.post('/sales', isAdmin, async (req, res) => {
+    try {
+        const {
+            name,
+            description,
+            values,
+            profitRate,
+            taxRate,
+            totalCost,
+            profitPrice,
+            tax,
+            finalPrice
+        } = req.body;
+
+        const sale = await Sale.create({
+            name,
+            description,
+            values,
+            profitRate,
+            taxRate,
+            totalCost,
+            profitPrice,
+            tax,
+            finalPrice
+        });
+
+        res.json(sale);
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+// Satışları getirme endpoint'i
+app.get('/sales', isAdmin, async (req, res) => {
+    try {
+        const sales = await Sale.find().sort('-createdAt');
+        res.json(sales);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Not ekleme
+app.post('/notes', authenticateToken, async (req, res) => {
+    try {
+        const { title, content, status } = req.body;
+        const note = await Note.create({
+            title,
+            content,
+            status,
+            userId: req.user.id
+        });
+        res.json(note);
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+// Notları getirme
+app.get('/notes', authenticateToken, async (req, res) => {
+    try {
+        const notes = await Note.find({ userId: req.user.id })
+            .sort('-createdAt');
+        res.json(notes);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Not durumunu güncelleme
+app.patch('/notes/:id/status', authenticateToken, async (req, res) => {
+    try {
+        const { status } = req.body;
+        const note = await Note.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user.id },
+            { status },
+            { new: true }
+        );
+        res.json(note);
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+// Not silme
+app.delete('/notes/:id', isAdmin, async (req, res) => {
+    try {
+        await Note.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user.id
+        });
+        res.json({ message: 'Not başarıyla silindi' });
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+// Sipariş silme endpoint'i
+app.delete('/orders/:id', isAdmin, async (req, res) => {
+    try {
+        await Order.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Sipariş başarıyla silindi' });
+    } catch (err) {
+        res.status(500).json({ error: 'Sipariş silinirken bir hata oluştu' });
     }
 });
 

@@ -3,6 +3,7 @@ import { useUser } from '../hooks/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 import icon from '../assets/icon.svg';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = () => {
     const { user, logout } = useUser();
@@ -13,6 +14,9 @@ const Navbar = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const searchRef = useRef(null);
     const navigate = useNavigate();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const { user: authUser } = useAuth();
 
     useEffect(() => {
         if (user?.role === 'admin') {
@@ -23,6 +27,9 @@ const Navbar = () => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setIsSearching(false);
+            }
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
             }
         };
 
@@ -139,18 +146,44 @@ const Navbar = () => {
                 </div>
 
                 <div className={`navbar-right ${isMenuOpen ? 'active' : ''}`}>
+                    {authUser && (
+                        <div className="dropdown" ref={dropdownRef}>
+                            <button 
+                                className="dropdown-toggle"
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            >
+                                Araçlar
+                                <span className="dropdown-arrow"></span>
+                            </button>
+                            {isDropdownOpen && (
+                                <div className="dropdown-menu">
+                                    <Link to="/notes" className="dropdown-item">
+                                        Notlar
+                                    </Link>
+                                    <Link to="/calculator" className="dropdown-item">
+                                        Hesaplama
+                                    </Link>
+                                    {authUser.isAdmin && (
+                                        <Link to="/sales" className="dropdown-item">
+                                            Satışlar
+                                        </Link>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
                     {user ? (
                         <div className="user-menu">
                             {user.role === 'admin' && (
                                 <>
-                                    <Link to="/admin" className="nav-link admin-link">
-                                        Admin Panel
-                                    </Link>
                                     <Link 
                                         to="/orders" 
                                         className={`nav-link orders-link ${unreadCount > 0 ? 'has-unread' : ''}`}
                                     >
                                         Siparişler {unreadCount > 0 && `(${unreadCount})`}
+                                    </Link>
+                                    <Link to="/admin" className="nav-link admin-link">
+                                        Admin Panel
                                     </Link>
                                 </>
                             )}
@@ -171,6 +204,7 @@ const Navbar = () => {
                             </Link>
                         </div>
                     )}
+                    
                 </div>
             </div>
         </nav>

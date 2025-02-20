@@ -72,11 +72,18 @@ const OrderModal = ({ product, onClose }) => {
                     </div>
                     <div className="form-group">
                         <label>Sipariş Notu</label>
-                        <textarea
-                            value={orderData.note}
-                            onChange={(e) => setOrderData({...orderData, note: e.target.value})}
-                            placeholder="Varsa eklemek istediğiniz notları yazabilirsiniz"
-                        />
+                        <div className="textarea-container">
+                            <textarea
+                                value={orderData.note}
+                                onChange={(e) => setOrderData({...orderData, note: e.target.value})}
+                                placeholder="Sipariş notunuzu girin (opsiyonel)"
+                                maxLength={255}
+                                className="order-note"
+                            />
+                            <div className="char-count">
+                                {orderData.note.length}/255
+                            </div>
+                        </div>
                     </div>
                     <div className="modal-actions">
                         <button type="button" onClick={onClose} className="cancel-button">

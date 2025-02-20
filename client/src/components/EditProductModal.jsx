@@ -94,8 +94,13 @@ const EditProductModal = ({ product, onClose, onUpdate }) => {
                         <textarea
                             value={productData.description}
                             onChange={(e) => setProductData({...productData, description: e.target.value})}
+                            placeholder="Ürün açıklamasını girin"
+                            maxLength={255}
                             required
                         />
+                        <div className="char-count">
+                            {productData.description.length}/255
+                        </div>
                     </div>
                     <div className="modal-actions">
                         <button type="button" onClick={onClose} className="cancel-button">

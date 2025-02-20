@@ -20,6 +20,15 @@ export const API_ENDPOINTS = {
     ORDERS: `${API_BASE_URL}/orders`,
     ORDER_MARK_READ: (id) => `${API_BASE_URL}/orders/${id}/mark-as-read`,
     ORDER_UNREAD_COUNT: `${API_BASE_URL}/orders/unread-count`,
+    ORDER_DELETE: (id) => `${API_BASE_URL}/orders/${id}`,
+
+    // New endpoint
+    SALES: `${API_BASE_URL}/sales`,
+
+    // Notes endpoints
+    NOTES: `${API_BASE_URL}/notes`,
+    NOTE_STATUS: (id) => `${API_BASE_URL}/notes/${id}/status`,
+    NOTE_DELETE: (id) => `${API_BASE_URL}/notes/${id}`,
 };
 
 export const API_CONFIG = {

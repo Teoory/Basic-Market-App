@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
 
     const fetchOrders = async () => {
         try {
@@ -43,6 +45,23 @@ const Orders = () => {
             }
         } catch (err) {
             console.error('Sipariş okundu olarak işaretlenirken hata:', err);
+        }
+    };
+
+    const handleDeleteOrder = async (orderId) => {
+        if (!window.confirm('Bu siparişi silmek istediğinizden emin misiniz?')) return;
+
+        try {
+            const response = await fetch(API_ENDPOINTS.ORDER_DELETE(orderId), {
+                method: 'DELETE',
+                ...API_CONFIG.FETCH_CONFIG
+            });
+
+            if (response.ok) {
+                setOrders(orders.filter(order => order._id !== orderId));
+            }
+        } catch (err) {
+            console.error('Sipariş silinirken hata:', err);
         }
     };
 
@@ -109,14 +128,22 @@ const Orders = () => {
                                             <span className="unread-badge">Yeni</span>
                                         )}
                                     </div>
-                                    {!order.isRead && (
-                                        <button 
-                                            className="mark-read-button"
-                                            onClick={() => handleMarkAsRead(order._id)}
+                                    <div className="order-actions">
+                                        {!order.isRead && (
+                                            <button 
+                                                className="mark-read-button"
+                                                onClick={() => handleMarkAsRead(order._id)}
+                                            >
+                                                Okundu Olarak İşaretle
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => handleDeleteOrder(order._id)}
+                                            className="delete-order-button"
                                         >
-                                            Okundu Olarak İşaretle
+                                            Sil
                                         </button>
-                                    )}
+                                    </div>
                                 </div>
                                 <div className="order-content">
                                     <div className="order-product">

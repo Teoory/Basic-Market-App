@@ -1,5 +1,7 @@
 # Anasayfa
 ![Ekran görüntüsü 2025-02-20 220134](https://github.com/user-attachments/assets/f20bac2e-558c-4bf2-9386-140ff6bd797a)
+# Ürün detay sayfası
+![Ekran görüntüsü 2025-02-20 220605](https://github.com/user-attachments/assets/a5dd4aed-da13-4a6f-9ebb-70998d89adff)
 # Siparisler
 ![Ekran görüntüsü 2025-02-20 220145](https://github.com/user-attachments/assets/0c278b80-a1c9-47f8-a118-807f2ba51e68)
 # Admin

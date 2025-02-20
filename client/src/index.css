@@ -1,0 +1,90 @@
+:root {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0;
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: var(--primary-color-50);
+  background-color: var(--secondary-color-950);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --primary-color-50: #fef6ee;
+  --primary-color-100: #fdead7;
+  --primary-color-200: #fad0ae;
+  --primary-color-300: #f6af7b;
+  --primary-color-400: #f07935;
+  --primary-color-500: #ed6322;
+  --primary-color-600: #df4b17;
+  --primary-color-700: #b93715;
+  --primary-color-800: #932c19;
+  --primary-color-900: #772817;
+  --primary-color-950: #40110a;
+
+  --secondary-color-50: #f2f8fd;
+  --secondary-color-100: #e4effa;
+  --secondary-color-200: #c2dff5;
+  --secondary-color-300: #8dc6ec;
+  --secondary-color-400: #4fa9e1;
+  --secondary-color-500: #298fce;
+  --secondary-color-600: #1a71af;
+  --secondary-color-700: #165a8e;
+  --secondary-color-800: #164d76;
+  --secondary-color-900: #184162;
+  --secondary-color-950: #0d2235;
+}
+
+* {
+  font-family: "Inter", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: 0;
+  appearance: 0;
+  border: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-color-50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color-500);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color-600);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--primary-color-600);
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--primary-color-950);
+    background-color: var(--primary-color-50);
+  }
+
+  a:hover {
+    color: var(--primary-color-500);
+  }
+
+  button {
+    background-color: var(--primary-color-50);
+  }
+}

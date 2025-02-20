@@ -1,0 +1,14 @@
+*.idea
+*api/uploads/*
+.env
+
+# dependencies
+/versions
+*/versions
+*/node_modules
+*.pnp
+*.pnp.js
+*.txt
+*.psd
+/api/node_modules
+/api/node_modules

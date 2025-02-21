@@ -4,6 +4,7 @@ const Footer = () => {
                 <p>
                     Bu site VORP sunucusu için geliştirilmiştir. {' '}
                 </p>
+                <a href="/usage-and-purpose" target="_blank" rel="noopener noreferrer">Kullanım ve Amaç</a>
                 <div className="footer-links">
                     <a href="https://discord.gg/YJQHY7w4" target="_blank" rel="noopener noreferrer">
                         Discord

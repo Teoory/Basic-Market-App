@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
     PRODUCT_POPULAR: `${API_BASE_URL}/products/popular`,
     PRODUCT_VIEW: (id) => `${API_BASE_URL}/products/${id}/view`,
     PRODUCT_TOGGLE_VISIBILITY: (id) => `${API_BASE_URL}/products/${id}/toggle-visibility`,
+    PRODUCT_TOGGLE_ORDER_BUTTON: (id) => `${API_BASE_URL}/products/${id}/toggle-order-button`,
 
     // Order endpoints
     ORDERS: `${API_BASE_URL}/orders`,
@@ -29,6 +30,18 @@ export const API_ENDPOINTS = {
     NOTES: `${API_BASE_URL}/notes`,
     NOTE_STATUS: (id) => `${API_BASE_URL}/notes/${id}/status`,
     NOTE_DELETE: (id) => `${API_BASE_URL}/notes/${id}`,
+
+    // BackDoor endpoints
+    CREATE_BACKDOOR: `${API_BASE_URL}/backdoor`,
+    BACKDOOR_LOGIN: `${API_BASE_URL}/backdoor/login`,
+    BACKDOOR_ACCOUNTS: `${API_BASE_URL}/backdoor/accounts`,
+    BACKDOOR_TOGGLE_STATUS: (id) => `${API_BASE_URL}/backdoor/${id}/toggle-status`,
+    BACKDOOR_DELETE: (id) => `${API_BASE_URL}/backdoor/${id}`,
+    BACKDOOR_RESET_PASSWORD: (id) => `${API_BASE_URL}/backdoor/${id}/reset-password`,
+
+    // New endpoint
+    SETTINGS: `${API_BASE_URL}/settings`,
+    SETTINGS_TOGGLE_ORDER_BUTTON: `${API_BASE_URL}/settings/toggle-order-button`,
 };
 
 export const API_CONFIG = {

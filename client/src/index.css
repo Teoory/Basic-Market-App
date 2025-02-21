@@ -39,6 +39,10 @@
   --secondary-color-800: #164d76;
   --secondary-color-900: #184162;
   --secondary-color-950: #0d2235;
+  
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
 }
 
 * {

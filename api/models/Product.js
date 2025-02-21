@@ -44,6 +44,10 @@ const ProductSchema = new mongoose.Schema({
     isHidden: {
         type: Boolean,
         default: false
+    },
+    isOrderButtonHidden: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

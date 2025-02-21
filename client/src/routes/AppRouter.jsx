@@ -12,6 +12,8 @@ import Orders from '../pages/Orders';
 import Notes from '../pages/Notes';
 import Calculator from '../pages/Calculator';
 import Sales from '../pages/Sales';
+import BackDoorMarket from '../pages/BackDoorMarket';
+import UsageAndPurpose from '../pages/UsageAndPurpose';
 
 import SearchResults from '../pages/SearchResults';
 
@@ -29,6 +31,8 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/backdoor" element={<BackDoorMarket />} />
+      <Route path="/usage-and-purpose" element={<UsageAndPurpose />} />
       {/*<Route path="/search" element={<SearchResults />} />*/}
       {user ? (
         <>

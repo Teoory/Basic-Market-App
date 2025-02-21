@@ -13,6 +13,8 @@ const Order = require('./models/Order');
 const { sendDiscordNotification } = require('./utils/discord');
 const Sale = require('./models/Sale');
 const Note = require('./models/Note');
+const BackDoorAccount = require('./models/BackDoorAccount');
+const Setting = require('./models/Setting');
 
 const app = express ();
 require ('dotenv').config ();
@@ -316,6 +318,18 @@ app.patch('/products/:id/toggle-visibility', isAdmin, async (req, res) => {
     }
 });
 
+// Ürün sipariş butonunu gizle/göster
+app.patch('/products/:id/toggle-order-button', isAdmin, async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        product.isOrderButtonHidden = !product.isOrderButtonHidden;
+        await product.save();
+        res.json(product);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
 // Sipariş oluşturma
 app.post('/orders', async (req, res) => {
     try {
@@ -474,6 +488,139 @@ app.delete('/orders/:id', isAdmin, async (req, res) => {
         res.json({ message: 'Sipariş başarıyla silindi' });
     } catch (err) {
         res.status(500).json({ error: 'Sipariş silinirken bir hata oluştu' });
+    }
+});
+
+// Rastgele şifre oluşturma fonksiyonu
+const generateRandomPassword = () => {
+    return Math.random().toString().slice(2, 8);
+};
+
+// BackDoor hesabı oluşturma
+app.post('/backdoor', isAdmin, async (req, res) => {
+    try {
+        const { username, note } = req.body;
+        const password = generateRandomPassword();
+        
+        const account = await BackDoorAccount.create({
+            username,
+            password: await bcrypt.hash(password, 10),
+            note
+        });
+
+        // Şifreyi şifrelenmemiş haliyle gönder
+        res.json({ 
+            message: 'BackDoor hesabı oluşturuldu',
+            account: {
+                username: account.username,
+                password: password,
+                note: account.note
+            }
+        });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// BackDoor hesaplarını listele
+app.get('/backdoor/accounts', isAdmin, async (req, res) => {
+    try {
+        const accounts = await BackDoorAccount.find({});
+        res.json(accounts);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// BackDoor hesap durumunu değiştir
+app.patch('/backdoor/:id/toggle-status', isAdmin, async (req, res) => {
+    try {
+        const account = await BackDoorAccount.findById(req.params.id);
+        account.isActive = !account.isActive;
+        await account.save();
+        res.json(account);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// BackDoor hesabını sil
+app.delete('/backdoor/:id', isAdmin, async (req, res) => {
+    try {
+        await BackDoorAccount.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Hesap silindi' });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// BackDoor şifre sıfırlama
+app.post('/backdoor/:id/reset-password', isAdmin, async (req, res) => {
+    try {
+        const newPassword = generateRandomPassword();
+        const account = await BackDoorAccount.findById(req.params.id);
+        account.password = await bcrypt.hash(newPassword, 10);
+        await account.save();
+        res.json({ newPassword });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// BackDoor giriş kontrolü
+app.post('/backdoor/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const account = await BackDoorAccount.findOne({ username });
+        
+        if (!account || !account.isActive) {
+            return res.status(401).json({ error: 'Geçersiz kullanıcı adı veya şifre' });
+        }
+
+        const isValid = await bcrypt.compare(password, account.password);
+        if (!isValid) {
+            return res.status(401).json({ error: 'Geçersiz kullanıcı adı veya şifre' });
+        }
+
+        // Giriş kaydı
+        account.lastLogin = new Date();
+        account.loginHistory.push({
+            loginDate: new Date()
+        });
+        await account.save();
+
+        res.json({ message: 'Giriş başarılı' });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// Global sipariş butonu durumunu değiştir
+app.patch('/settings/toggle-order-button', isAdmin, async (req, res) => {
+    try {
+        let setting = await Setting.findOne({});
+        if (!setting) {
+            setting = new Setting();
+        }
+        setting.isOrderButtonGloballyHidden = !setting.isOrderButtonGloballyHidden;
+        await setting.save();
+        res.json(setting);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// Global ayarları getir
+app.get('/settings', async (req, res) => {
+    try {
+        let setting = await Setting.findOne({});
+        if (!setting) {
+            setting = new Setting();
+            await setting.save();
+        }
+        res.json(setting);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
 });
 

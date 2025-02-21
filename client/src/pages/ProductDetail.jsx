@@ -15,6 +15,9 @@ const ProductDetail = () => {
     const { id } = useParams();
     const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [globalSettings, setGlobalSettings] = useState({
+        isOrderButtonGloballyHidden: false
+    });
 
     // Slider ayarları
     const sliderSettings = {
@@ -72,8 +75,23 @@ const ProductDetail = () => {
             }
         };
 
+        const fetchSettings = async () => {
+            try {
+                const response = await fetch(API_ENDPOINTS.SETTINGS, {
+                    ...API_CONFIG.FETCH_CONFIG
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setGlobalSettings(data);
+                }
+            } catch (err) {
+                console.error('Ayarlar yüklenirken hata:', err);
+            }
+        };
+
         fetchProduct();
         fetchRelatedProducts();
+        fetchSettings();
 
         // Cleanup function
         return () => {
@@ -150,12 +168,15 @@ const ProductDetail = () => {
                                 <h2>Ürün Açıklaması</h2>
                                 <p>{product.description}</p>
                             </div>
-                            <button 
-                                className="order-button"
-                                onClick={() => setIsOrderModalOpen(true)}
-                            >
-                                Almak İstiyorum
-                            </button>
+                            {!globalSettings.isOrderButtonGloballyHidden && (
+                                <button 
+                                    className="order-button"
+                                    onClick={() => setIsOrderModalOpen(true)}
+                                    disabled={product.stock === 0}
+                                >
+                                    {product.stock === 0 ? 'Stokta Yok' : 'Almak İstiyorum'}
+                                </button>
+                            )}
                         </div>
                     </div>
 

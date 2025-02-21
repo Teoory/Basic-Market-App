@@ -1,14 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import Slider from 'react-slick';
 import Navbar from '../components/Navbar';
 import OrderModal from '../components/OrderModal';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
+
+// Slick carousel stillerini import et
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [relatedProducts, setRelatedProducts] = useState([]);
     const { id } = useParams();
     const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    // Slider ayarları
+    const sliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: false,
+        afterChange: (index) => setCurrentImageIndex(index),
+        adaptiveHeight: true,
+        arrows: true,
+        className: "product-slider"
+    };
 
     useEffect(() => {
         let isMounted = true; // Component mount durumunu kontrol et
@@ -63,6 +83,11 @@ const ProductDetail = () => {
 
     if (!product) return <div>Yükleniyor...</div>;
 
+    // Tüm görselleri bir araya getir
+    const allImages = product.type === 'car' && product.images?.length > 0
+        ? [product.imageUrl, ...product.images.map(img => img.url)]
+        : [product.imageUrl];
+
     return (
         <div className="page-wrapper">
             <Navbar />
@@ -71,7 +96,36 @@ const ProductDetail = () => {
                     <div className="product-detail-container">
                         <div className="product-detail-left">
                             <div className="product-detail-image">
-                                <img src={product.imageUrl} alt={product.name} />
+                                {allImages.length > 1 ? (
+                                    <>
+                                        <Slider {...sliderSettings}>
+                                            {allImages.map((imgUrl, index) => (
+                                                <div key={index} className="slider-image-container">
+                                                    <img 
+                                                        src={imgUrl} 
+                                                        alt={`${product.name} - Görsel ${index + 1}`}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = 'https://via.placeholder.com/400x300?text=Resim+Yüklenemedi';
+                                                        }}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                        <div className="image-counter">
+                                            {currentImageIndex + 1} / {allImages.length}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <img 
+                                        src={product.imageUrl} 
+                                        alt={product.name}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = 'https://via.placeholder.com/400x300?text=Resim+Yüklenemedi';
+                                        }}
+                                    />
+                                )}
                             </div>
                         </div>
                         <div className="product-detail-right">

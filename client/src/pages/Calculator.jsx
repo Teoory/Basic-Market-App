@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
 import { useAuth } from '../contexts/AuthContext';
+import ProductSelectModal from '../components/ProductSelectModal';
 
 const Calculator = () => {
     const [values, setValues] = useState([]);
@@ -13,6 +14,7 @@ const Calculator = () => {
     const { user } = useAuth();
     const [rateInterval, setRateInterval] = useState(null);
     const [rateSpeed, setRateSpeed] = useState(100); // Başlangıç hızı (ms)
+    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
     const handleAddValue = () => {
         if (currentValue) {
@@ -112,6 +114,11 @@ const Calculator = () => {
         return () => clearInterval(rateInterval);
     }, [rateInterval]);
 
+    const handleProductSelect = (product) => {
+        setCurrentValue(product.price.toString());
+        setIsProductModalOpen(false);
+    };
+
     return (
         <div className="page-wrapper">
             <Navbar />
@@ -131,14 +138,22 @@ const Calculator = () => {
                                 />
                                 <div className="button-group">
                                     <button 
+                                        onClick={() => setIsProductModalOpen(true)}
+                                        className="action-button add-product-button"
+                                    >
+                                        Ürün Seç
+                                    </button>
+                                    <button 
                                         onClick={handleAddValue}
                                         className="action-button add-button"
+                                        disabled={!currentValue}
                                     >
-                                        Yeni Değer Ekle
+                                        Ekle
                                     </button>
                                     <button 
                                         onClick={handleRemoveLastValue}
                                         className="action-button remove-button"
+                                        disabled={values.length === 0}
                                     >
                                         Son Değeri Sil
                                     </button>
@@ -183,6 +198,9 @@ const Calculator = () => {
                                                     <button onClick={() => handleSingleRateChange(setProfitRate, 10, profitRate)}>
                                                         +10
                                                     </button>
+                                                    <button onClick={() => handleSingleRateChange(setProfitRate, 25, profitRate)}>
+                                                        +25
+                                                    </button>
                                                     <button onClick={() => handleSingleRateChange(setProfitRate, 50, profitRate)}>
                                                         +50
                                                     </button>
@@ -209,6 +227,12 @@ const Calculator = () => {
                                                         disabled={profitRate < 10}
                                                     >
                                                         -10
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => handleSingleRateChange(setProfitRate, -25, profitRate)}
+                                                        disabled={profitRate < 25}
+                                                    >
+                                                        -25
                                                     </button>
                                                     <button 
                                                         onClick={() => handleSingleRateChange(setProfitRate, -50, profitRate)}
@@ -249,6 +273,9 @@ const Calculator = () => {
                                                     <button onClick={() => handleSingleRateChange(setTaxRate, 10, taxRate)}>
                                                         +10
                                                     </button>
+                                                    <button onClick={() => handleSingleRateChange(setTaxRate, 25, taxRate)}>
+                                                        +25
+                                                    </button>
                                                     <button onClick={() => handleSingleRateChange(setTaxRate, 50, taxRate)}>
                                                         +50
                                                     </button>
@@ -276,6 +303,12 @@ const Calculator = () => {
                                                         disabled={taxRate < 10}
                                                     >
                                                         -10
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => handleSingleRateChange(setTaxRate, -25, taxRate)}
+                                                        disabled={taxRate < 25}
+                                                    >
+                                                        -25
                                                     </button>
                                                     <button 
                                                         onClick={() => handleSingleRateChange(setTaxRate, -50, taxRate)}
@@ -343,6 +376,13 @@ const Calculator = () => {
                     </div>
                 </div>
             </main>
+
+            {isProductModalOpen && (
+                <ProductSelectModal
+                    onClose={() => setIsProductModalOpen(false)}
+                    onSelect={handleProductSelect}
+                />
+            )}
         </div>
     );
 };

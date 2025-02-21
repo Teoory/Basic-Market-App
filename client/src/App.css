@@ -2813,3 +2813,443 @@
 .footer a:hover {
     color: var(--primary-color-400);
 }
+
+/* Car Modal Styles */
+.image-field {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: var(--secondary-color-900);
+    border-radius: 8px;
+    cursor: move;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image {
+    padding: 0.5rem 1rem;
+    background-color: #DC2626;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-image {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color-500);
+    color: white;
+    border-radius: 6px;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.add-car-button {
+    background-color: var(--primary-color-600);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard-actions {
+        flex-direction: column;
+    }
+    
+    .add-car-button {
+        margin-left: 0;
+    }
+}
+
+/* Slider Styles */
+.product-detail-image {
+    width: 100%;
+    max-width: 600px; /* Maksimum genişlik ekleyelim */
+    background-color: var(--secondary-color-900);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto; /* Merkeze hizalama */
+}
+
+.slider-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 aspect ratio */
+    background-color: var(--secondary-color-900);
+}
+
+.slider-image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px; /* Görsel etrafında boşluk */
+}
+
+/* Tek görsel için stil */
+.product-detail-image > img {
+    width: 100%;
+    height: auto;
+    max-height: 450px; /* Maksimum yükseklik */
+    display: block;
+    object-fit: contain;
+}
+
+/* Slider için özel stiller */
+.product-detail-image .slick-slider {
+    margin-bottom: 40px; /* Dots ve sayaç için alan */
+}
+
+.product-detail-image .slick-slide {
+    max-height: 450px; /* Slider yüksekliğini sınırla */
+}
+
+.product-detail-image .slick-dots {
+    bottom: -25px;
+}
+
+.product-detail-image .slick-dots li button:before {
+    color: var(--primary-color-50);
+    opacity: 0.5;
+}
+
+.product-detail-image .slick-dots li.slick-active button:before {
+    opacity: 1;
+}
+
+.product-detail-image .slick-prev,
+.product-detail-image .slick-next {
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.product-detail-image .slick-prev {
+    left: 10px;
+}
+
+.product-detail-image .slick-next {
+    right: 10px;
+}
+
+.product-detail-image .slick-prev:before,
+.product-detail-image .slick-next:before {
+    font-size: 24px;
+    color: var(--primary-color-50);
+    opacity: 0.8;
+}
+
+.image-counter {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--primary-color-50);
+    font-size: 0.9rem;
+    padding: 5px;
+    background-color: var(--secondary-color-800);
+    border-radius: 4px;
+    display: inline-block;
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .product-detail-image {
+        max-width: 100%; /* Mobilde tam genişlik */
+    }
+
+    .slider-image-container {
+        padding-top: 66.67%; /* 3:2 aspect ratio for mobile */
+    }
+
+    .product-detail-image > img,
+    .product-detail-image .slick-slide {
+        max-height: 350px; /* Mobilde daha küçük yükseklik */
+    }
+}
+
+/* Section Styles */
+.products-section,
+.cars-section {
+    margin-bottom: 4rem;
+}
+
+.products-section h1,
+.cars-section h1 {
+    color: var(--primary-color-50);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.products-section h1::after,
+.cars-section h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color-500);
+    border-radius: 2px;
+}
+
+.cars-section {
+    padding-top: 2rem;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .products-section,
+    .cars-section {
+        margin-bottom: 2rem;
+    }
+
+    .products-section h1,
+    .cars-section h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .products-section h1::after,
+    .cars-section h1::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Tab Styles */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--secondary-color-800);
+}
+
+.tab-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    color: var(--primary-color-300);
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color-500);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-button:hover {
+    color: var(--primary-color-50);
+}
+
+.tab-button.active {
+    color: var(--primary-color-50);
+}
+
+.tab-button.active::after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    min-height: 400px; /* Minimum yükseklik ekleyerek tab değişiminde sayfanın sıçramasını önle */
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: row;
+        padding: 0.5rem;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        flex: 1;
+    }
+}
+
+/* Product Select Modal Styles */
+.product-select-modal {
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.product-select-modal .search-box {
+    margin-bottom: 1.5rem;
+}
+
+.product-select-modal .search-box input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--secondary-color-700);
+    border-radius: 8px;
+    background-color: var(--secondary-color-800);
+    color: var(--primary-color-50);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.product-select-card {
+    background-color: var(--secondary-color-800);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.product-select-card:hover {
+    transform: translateY(-2px);
+}
+
+.product-select-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.product-select-card .product-info {
+    padding: 1rem;
+}
+
+.product-select-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--primary-color-50);
+}
+
+.product-select-card .price {
+    margin: 0.5rem 0 0;
+    color: var(--primary-color-500);
+    font-weight: 600;
+}
+
+.add-product-button {
+    background-color: var(--primary-color-600);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.add-product-button:hover {
+    background-color: var(--primary-color-700);
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .product-select-card img {
+        height: 120px;
+    }
+}
+
+/* Calculator Button Styles */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.action-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.add-product-button {
+    background-color: var(--primary-color-600);
+    color: white;
+}
+
+.add-product-button:hover:not(:disabled) {
+    background-color: var(--primary-color-700);
+}
+
+.add-button {
+    background-color: var(--primary-color-500);
+    color: white;
+}
+
+.add-button:hover:not(:disabled) {
+    background-color: var(--primary-color-600);
+}
+
+.remove-button {
+    background-color: var(--secondary-color-700);
+    color: var(--primary-color-50);
+}
+
+.remove-button:hover:not(:disabled) {
+    background-color: var(--secondary-color-600);
+}
+
+@media (max-width: 768px) {
+    .button-group {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}

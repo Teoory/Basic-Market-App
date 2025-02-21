@@ -2,36 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
 
-const ProductList = () => {
-    const [products, setProducts] = useState([]);
-
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch(API_ENDPOINTS.PRODUCTS, {
-                ...API_CONFIG.FETCH_CONFIG
-            });
-            const data = await response.json();
-            // İndirimli ürünleri öne al
-            const sortedProducts = [...data].sort((a, b) => {
-                // Önce indirimli ürünleri göster
-                if (a.discountPercentage > 0 && b.discountPercentage === 0) return -1;
-                if (a.discountPercentage === 0 && b.discountPercentage > 0) return 1;
-                // İndirim oranı yüksek olanı daha önce göster
-                if (a.discountPercentage > b.discountPercentage) return -1;
-                if (a.discountPercentage < b.discountPercentage) return 1;
-                return 0;
-            });
-            setProducts(sortedProducts);
-        } catch (err) {
-            console.error('Ürünler yüklenirken hata:', err);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    if (products.length === 0) {
+const ProductList = ({ products }) => {
+    if (!products || products.length === 0) {
         return (
             <div className="no-products">
                 <p>Henüz ürün bulunmamaktadır.</p>

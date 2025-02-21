@@ -53,6 +53,7 @@ const SaleDetailsModal = ({ sale, onClose }) => {
 const Sales = () => {
     const [sales, setSales] = useState([]);
     const [selectedSale, setSelectedSale] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const { user } = useAuth();
 
     useEffect(() => {
@@ -72,6 +73,13 @@ const Sales = () => {
             console.error('Satışlar yüklenirken hata:', err);
         }
     };
+
+    // Filtreleme fonksiyonu
+    const filteredSales = sales.filter(sale => 
+        sale.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sale.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sale.finalPrice.toString().includes(searchTerm)
+    );
 
     if (!user?.isAdmin) {
         return (
@@ -93,29 +101,40 @@ const Sales = () => {
             <main className="main-content">
                 <div className="container">
                     <div className="sales-header">
-                        <h1>Products</h1>
+                        <h1>Satışlar</h1>
                         <div className="search-box">
-                            <input type="text" placeholder="Arama yapın..." />
+                            <input 
+                                type="text" 
+                                placeholder="İsim, açıklama veya fiyata göre ara..." 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
                     </div>
                     
                     <div className="sales-grid">
-                        {sales.map(sale => (
+                        {filteredSales.map(sale => (
                             <div key={sale._id} className="sale-card">
                                 <div className="sale-info">
                                     <h3>{sale.name}</h3>
-                                    <p className="sale-price">Price: {sale.finalPrice}$</p>
+                                    <p className="sale-price">Fiyat: {sale.finalPrice}₺</p>
                                     <p className="sale-date">{new Date(sale.createdAt).toLocaleDateString('tr-TR')}</p>
                                 </div>
                                 <button 
                                     className="details-button"
                                     onClick={() => setSelectedSale(sale)}
                                 >
-                                    Details
+                                    Detaylar
                                 </button>
                             </div>
                         ))}
                     </div>
+
+                    {filteredSales.length === 0 && (
+                        <div className="no-results">
+                            <p>Arama sonucuna uygun satış bulunamadı.</p>
+                        </div>
+                    )}
 
                     {selectedSale && (
                         <SaleDetailsModal 

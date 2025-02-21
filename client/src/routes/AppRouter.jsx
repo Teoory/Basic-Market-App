@@ -29,7 +29,6 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/calculator" element={<Calculator />} />
       {/*<Route path="/search" element={<SearchResults />} />*/}
       {user ? (
         <>
@@ -41,6 +40,7 @@ const AppRouter = () => {
             </>
           )}
           <Route path="/notes" element={<Notes />} />
+          <Route path="/calculator" element={<Calculator />} />
         </>
       ) : (
         <>

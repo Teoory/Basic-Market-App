@@ -4,6 +4,7 @@ import AddProductModal from '../components/AddProductModal';
 import EditProductModal from '../components/EditProductModal';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
 import { Link } from 'react-router-dom';
+import AddCarModal from '../components/AddCarModal';
 
 const AdminDashboard = () => {
     const [products, setProducts] = useState([]);
@@ -15,6 +16,7 @@ const AdminDashboard = () => {
         key: 'viewCount',
         direction: 'desc'
     });
+    const [isAddCarModalOpen, setIsAddCarModalOpen] = useState(false);
 
     useEffect(() => {
         fetchProducts();
@@ -116,12 +118,20 @@ const AdminDashboard = () => {
                 <div className="container">
                     <div className="dashboard-header">
                         <h1>Admin Paneli</h1>
-                        <button 
-                            className="add-product-button"
-                            onClick={() => setIsAddModalOpen(true)}
-                        >
-                            Yeni Ürün Ekle
-                        </button>
+                        <div className="dashboard-actions">
+                            <button 
+                                className="add-product-button"
+                                onClick={() => setIsAddModalOpen(true)}
+                            >
+                                Yeni Ürün Ekle
+                            </button>
+                            <button 
+                                className="add-car-button"
+                                onClick={() => setIsAddCarModalOpen(true)}
+                            >
+                                Yeni Araba Ekle
+                            </button>
+                        </div>
                     </div>
 
                     <div className="products-section">
@@ -222,6 +232,13 @@ const AdminDashboard = () => {
             {isAddModalOpen && (
                 <AddProductModal 
                     onClose={() => setIsAddModalOpen(false)}
+                    onAdd={handleAddProduct}
+                />
+            )}
+
+            {isAddCarModalOpen && (
+                <AddCarModal 
+                    onClose={() => setIsAddCarModalOpen(false)}
                     onAdd={handleAddProduct}
                 />
             )}

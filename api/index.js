@@ -234,18 +234,27 @@ app.get('/products', async (req, res) => {
 // Ürün ekleme endpoint'ini güncelle
 app.post('/products', isAdmin, async (req, res) => {
     try {
-        const { name, price, originalPrice, stock, description, imageUrl, discountPercentage } = req.body;
+        const { name, price, stock, description, imageUrl, discountPercentage, type, images } = req.body;
         
+        if (!imageUrl && images && images.length > 0) {
+            // Eğer imageUrl boşsa ve images varsa, ilk resmi imageUrl olarak kullan
+            imageUrl = images[0].url;
+        }
+
         const productData = {
             name,
-            price: parseFloat(price),
-            originalPrice: parseFloat(originalPrice),
-            stock: parseInt(stock),
+            price: parseFloat(price) || 0,
+            stock: parseInt(stock) || 0,
             description,
             imageUrl,
-            discountPercentage: parseFloat(discountPercentage || 0),
+            type: type || 'normal',
+            discountPercentage: parseFloat(discountPercentage) || 0,
             viewCount: 0
         };
+
+        if (type === 'car' && images && images.length > 0) {
+            productData.images = images;
+        }
 
         if (discountPercentage > 0) {
             productData.originalPrice = productData.price;

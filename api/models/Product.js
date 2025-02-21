@@ -28,6 +28,15 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        enum: ['normal', 'car'],
+        default: 'normal'
+    },
+    images: [{
+        url: String,
+        order: Number
+    }],
     viewCount: {
         type: Number,
         default: 0

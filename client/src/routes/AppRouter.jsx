@@ -9,6 +9,10 @@ import ProductDetail from '../pages/ProductDetail';
 import AdminDashboard from '../pages/AdminDashboard';
 import NotFound from '../pages/NotFound';
 import Orders from '../pages/Orders';
+import Notes from '../pages/Notes';
+import Calculator from '../pages/Calculator';
+import Sales from '../pages/Sales';
+
 import SearchResults from '../pages/SearchResults';
 
 const AppRouter = () => {
@@ -21,17 +25,22 @@ const AppRouter = () => {
 
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/orders" element={<Orders />} />
+      <Route path="/calculator" element={<Calculator />} />
       {/*<Route path="/search" element={<SearchResults />} />*/}
       {user ? (
         <>
           {user.role === 'admin' && (
+            <>
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="/orders" element={<Orders />} />
+            </>
           )}
-          <Route path="*" element={<NotFound />} />
+          <Route path="/notes" element={<Notes />} />
         </>
       ) : (
         <>

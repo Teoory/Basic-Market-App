@@ -196,6 +196,10 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div className="auth-buttons">
+                            
+                            <Link to="/calculator" className="nav-link">
+                                Hesaplama
+                            </Link>
                             <Link to="/login" className="nav-link login-link">
                                 Giriş Yap
                             </Link>

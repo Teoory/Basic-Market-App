@@ -1,3 +1,37 @@
+Kullanım ve Amaç
+================
+
+Önemli Bilgilendirme
+--------------------
+
+Bu site tamamen sanal bir oyun deneyimi için tasarlanmıştır. Sitede yer alan hiçbir içerik gerçek değildir ve tamamı hayal ürünüdür.
+
+FiveM Nedir?
+------------
+
+FiveM, Grand Theft Auto V oyunu için geliştirilmiş bir multiplayer modifikasyonudur. Özel sunucularda oyuncuların bir araya gelerek çeşitli rol yapma senaryoları oluşturmasına olanak sağlar. Daha detaylı bilgi için [FiveM'in resmi sitesini](https://fivem.net/) ziyaret edebilirsiniz.
+
+Site Hakkında
+-------------
+
+Bu web sitesi, FiveM platformunda kullanılan [QB-Core](https://github.com/qbcore-framework) modunun yönetimi için özel olarak geliştirilmiştir. Sitede kullanılan görseller ve içerikler QB-Core moduna aittir.
+
+Yasal Uyarı
+-----------
+
+Bu site yalnızca oyun içi kullanım için tasarlanmıştır. Herhangi bir yasadışı kullanım durumunda:
+
+*   Kullanıcı bilgileri ilgili resmi kurumlarla paylaşılacaktır
+*   İlgili hesaplar kalıcı olarak yasaklanacaktır
+*   Gerekli yasal işlemler başlatılacaktır
+
+Sorumluluk Reddi
+----------------
+
+Sitedeki hiçbir içerik gerçek para, ürün veya hizmet ile ilişkili değildir. Tüm işlemler ve içerikler sadece FiveM oyun modu kapsamında geçerlidir.
+
+___________
+
 # Anasayfa
 ![Ekran görüntüsü 2025-02-20 220134](https://github.com/user-attachments/assets/f20bac2e-558c-4bf2-9386-140ff6bd797a)
 # Ürün detay sayfası
